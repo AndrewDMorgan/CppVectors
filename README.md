@@ -6,3 +6,6 @@ CVectors contains a vector3 type called float3 and multiple math functions such 
 
 To use the functions and types in CVectors, you want to include the header file: #include "CVectors". After that, you will have acces to all the functions and types. Ensure that the file or a reference to the file is in the directory of the file including it.
 
+# Updates
+
+float2 and float4 types are planned and will be comming out once completed. The functions for the float3 will also work with float4 and float2. I also plan to add other features to the header. A float 5 type may be added. In addtion, double and int vector types may be added at some point.
