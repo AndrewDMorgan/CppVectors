@@ -3,14 +3,18 @@
 #include <cmath>
 
 
+// a vector2 type for floats
 class float2
 {
     public:
+        // intializing the veriables
         float2() = default;
 
         float x;
         float y;
 
+
+        // the constructor(s)
         float2 (float x, float y) {}
 
         float2 (float x)
@@ -18,6 +22,7 @@ class float2
             y = x;
         }
         
+        // overloading the operators to make it easier to use the vectors
         bool operator == (float2 vector)
         {
             return vector.x == x && vector.y == y;
@@ -150,15 +155,18 @@ class float2
         }
 };
 
+// a vector3 type for floats
 class float3
 {
     public:
+        // initializing the vector3 veriables
         float3() = default;
 
         float x;
         float y;
         float z;
 
+        // the constructor(s)
         float3 (float x, float y, float z) {}
 
         float3 (float x)
@@ -179,6 +187,7 @@ class float3
             y = vector.y;
         }
         
+        // overloading the operators
         bool operator == (float3 vector)
         {
             return vector.x == x && vector.y == y && vector.z == z;
@@ -230,7 +239,7 @@ class float3
         {
             return float3((int) x % (int) vector.x, (int) y % (int) vector.y, (int) z % (int) vector.z);
         }
-        
+
         float3 operator + (float v)
         {
             return float3(x + v, y + v, z + v);
@@ -311,9 +320,11 @@ class float3
         }
 };
 
+// a vector4 class for floats
 class float4
 {
     public:
+        // initializing veriables
         float4() = default;
 
         float x;
@@ -321,6 +332,7 @@ class float4
         float z;
         float w;
 
+        // the constructor(s)
         float4 (float x, float y, float z, float w) {}
 
         float4 (float x)
@@ -366,6 +378,7 @@ class float4
             w = vector2.y;
         }
         
+        // overloading the operators
         bool operator == (float4 vector)
         {
             return vector.x == x && vector.y == y && vector.z == z && vector.w == w;
@@ -498,6 +511,7 @@ class float4
         }
 };
 
+// a debugging function to see the value of the vecotr
 int print(float4 vector)
 {
     std::cout<<vector.x<<","<<vector.y<<","<<vector.z<<","<<vector.w<<std::endl;
@@ -516,6 +530,7 @@ int print(float2 vector)
     return 0;
 }
 
+// two dot product functions for 1 - 2 vectors
 float dot(float4 vector1, float4 vector2)
 {
     return vector1.x * vector2.x + vector1.y * vector2.y + vector1.z * vector2.z + vector1.w * vector2.w;
@@ -546,6 +561,7 @@ float dot(float2 vector)
     return vector.x * vector.x + vector.y * vector.y;
 }
 
+// vector rounding functions
 float4 round(float4 vector)
 {
     return float4(round(vector.x), round(vector.y), round(vector.z), round(vector.w));
@@ -561,6 +577,7 @@ float2 round(float2 vector)
     return float2(round(vector.x), round(vector.y));
 }
 
+// length functions for vectors (1 - 2 vectors)
 float length(float4 vector)
 {
     return sqrt(dot(vector));
@@ -591,6 +608,7 @@ float length(float2 vector1, float2 vector2)
     return length(vector1 - vector2);
 }
 
+// normalizing vector types
 float4 normalize(float4 vector)
 {
     return vector / length(vector);
@@ -606,7 +624,8 @@ float2 normalize(float2 vector)
     return vector / length(vector);
 }
 
-// add a 2d and 4d cross product
+// the cross product
+// add a 2D and 4D cross product
 float3 cross(float3 vector1, float3 vector2)
 {
     float v1 = vector1.y * vector2.z - vector1.z * vector2.y;
@@ -615,6 +634,7 @@ float3 cross(float3 vector1, float3 vector2)
     return float3(v1, v2, v3);
 }
 
+// a fract function for floats and vectors
 float fract(float v)
 {
     return v - floor(v);
@@ -635,6 +655,7 @@ float2 fract(float2 vector)
     return float2(fract(vector.x), fract(vector.y));
 }
 
+// a vector floor function
 float4 floor(float4 vector)
 {
     return float4(floor(vector.x), floor(vector.y), floor(vector.z), floor(vector.w));
@@ -650,6 +671,7 @@ float2 floor(float2 vector)
     return float2(floor(vector.x), floor(vector.y));
 }
 
+// a vector veil function
 float4 ceil(float4 vector)
 {
     return float4(ceil(vector.x), ceil(vector.y), ceil(vector.z), ceil(vector.w));
@@ -665,6 +687,7 @@ float2 ceil(float2 vector)
     return float2(ceil(vector.x), ceil(vector.y));
 }
 
+// float min and vector min functions
 float min(float v1, float v2)
 {
     if (v1 < v2)
@@ -692,6 +715,7 @@ float2 min(float2 vector, float v)
     return float2(min(vector.x, v), min(vector.y, v));
 }
 
+// float max and vector max functions
 float max(float v1, float v2)
 {
     if (v1 > v2)
@@ -719,6 +743,7 @@ float2 max(float2 vector, float v)
     return float2(max(vector.x, v), max(vector.y, v));
 }
 
+// clamp functions for vectors and floats
 float clamp(float v, float l, float r)
 {
     return max(min(v, r), l);
@@ -739,6 +764,7 @@ float2 clamp(float2 vector, float l, float r)
     return float2(clamp(vector.x, l, r), clamp(vector.y, l, r));
 }
 
+// clamp functions for floats and vectors that clamps the value(s) between 0 and 1
 float clamp01(float v)
 {
     return max(min(v, 1), 0);
@@ -759,6 +785,7 @@ float2 clamp01(float2 vector)
     return float2(clamp01(vector.x), clamp01(vector.y));
 }
 
+// mixing/linear interpolation functions for vectors and floats
 float lerp(float v1, float v2, float k)
 {
     k = clamp01(k);
@@ -786,6 +813,8 @@ float2 lerp(float2 vector1, float2 vector2, float k)
     return float2(vector1.x * k2 + vector2.x * k, vector1.y * k2 + vector2.y * k);
 }
 
+
+// smoothstep functions for floats and vectors
 float smoothstep(float k)
 {
     k = clamp01(k);
@@ -807,6 +836,7 @@ float2 smoothstep(float2 vector)
     return float2(smoothstep(vector.x), smoothstep(vector.y));
 }
 
+// remapping functions for vectors and floats
 float map(float v, float cl, float cr, float nl, float nr)
 {
     float nv = v - cl;
@@ -845,6 +875,7 @@ float2 map(float2 vector, float2 cl, float2 cr, float2 nl, float2 nr)
     return float2(map(vector.x, cl.x, cr.x, nl.x, nr.x), map(vector.y, cl.y, cr.y, nl.y, nr.y));
 }
 
+// power functions for vectors
 float4 pow(float4 vector, float v)
 {
     return float4(std::pow(vector.x, v), std::pow(vector.y, v), std::pow(vector.z, v), std::pow(vector.w, v));
@@ -875,6 +906,7 @@ float2 pow(float2 vector1, float2 vector2)
     return float2(std::pow(vector1.x, vector2.x), std::pow(vector1.y, vector2.y));
 }
 
+// vector absolute value functions
 float4 abs(float4 vector)
 {
     return float4(abs(vector.x), abs(vector.y), abs(vector.z), abs(vector.w));
