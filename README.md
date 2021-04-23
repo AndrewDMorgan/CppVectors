@@ -8,4 +8,4 @@ To use the functions and types in CVectors, you want to include the header file:
 
 # Updates
 
-A possible float5 type may happen and possibly vectors for doubles and intagers. A 2D and 3D cross product are on the way. More functions may/will also come.
+A possible float5 type may happen and possibly vectors for doubles and intagers. A 2D and 3D cross product are on the way. More functions may/will also come. Vector math between different types of vectors will also be added at some point (for example, float2 - float3 or float3 - float2). An example of how this would work (vector math between different vector types) can be see in the python3 version of CVectors, PyVectors: https://github.com/AndrewDMorgan/PyVectors-and-PyMarching/tree/main/PyVectors
