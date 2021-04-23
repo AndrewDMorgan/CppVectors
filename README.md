@@ -8,4 +8,4 @@ To use the functions and types in CVectors, you want to include the header file:
 
 # Updates
 
-float2 and float4 types are planned and will be comming out once completed. The functions for the float3 will also work with float4 and float2. I also plan to add other features to the header. A float 5 type may be added. In addtion, double and int vector types may be added at some point.
+A possible float5 type may happen and possibly vectors for doubles and intagers. A 2D and 3D cross product are on the way. More functions may/will also come.
