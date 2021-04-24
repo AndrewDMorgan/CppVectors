@@ -13,7 +13,6 @@ class float2
         float x;
         float y;
 
-
         // the constructor(s)
         float2 (float x, float y) {}
 
@@ -354,6 +353,24 @@ class float4
             y = vector.y;
             z = x;
             w = y;
+        }
+
+        float4 (float2 vector, float z, float w)
+        {
+            x = vector.x;
+            y = vector.y;
+        }
+
+        float4 (float x, float y, float2 vector)
+        {
+            z = vector.x;
+            w = vector.y;
+        }
+
+        float4 (float x, float2 vector, float w)
+        {
+            y = vector.x;
+            z = vector.y;
         }
 
         float4 (float3 vector, float w)
