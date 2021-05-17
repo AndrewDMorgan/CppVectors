@@ -939,3 +939,39 @@ float2 abs(float2 vector)
     return float2(abs(vector.x), abs(vector.y));
 }
 
+// distance functions
+class dists
+{
+    // distance to a point
+    float point(float3 p1, float3 p2)
+    {
+        return length(p1, p2);
+    }
+
+    float point(float2 p1, float2 p2)
+    {
+        return length(p1, p2);
+    }
+
+    float point(float4 p1, float4 p2)
+    {
+        return length(p1, p2);
+    }
+
+    // distance to a circle/sphere/hyper sphere
+    float hyperSphere(float4 p1, float4 p2, float r)
+    {
+        return length(p1, p2) - r;
+    }
+
+    float sphere(float3 p1, float3 p2, float r)
+    {
+        return length(p1, p2) - r;
+    }
+
+    float circle(float2 p1, float2 p2, float r)
+    {
+        return length(p1, p2) - r;
+    }
+};
+
