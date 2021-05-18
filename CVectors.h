@@ -1238,7 +1238,7 @@ class Array
                 }
             }
         }
-
+        
         Array <T> operator + (Array <T> array2)
         {
             if (size.y == 0)
