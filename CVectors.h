@@ -1062,7 +1062,7 @@ class file
         // converts the data in a file into a string
         static std::string read(std::string file_name)
         {
-            // isnt keeping \n
+            // isnt keeping \n (fix)
             std::string o = "";
             std::fstream my_file;
             my_file.open(file_name, std::ios::in);
@@ -1084,6 +1084,7 @@ class file
             return o;
         }
         
+        // writes or creates and writes to a file
         static void write(std::string file_name, std::string contents)
         {
             std::fstream my_file;
@@ -1099,21 +1100,25 @@ class file
 };
 
 
+// an array class
 template<typename T>
 class Array
 {
 
     private:
 
+        // initialzing private veriables
         int total_size;
         T* contents;
 
     public:
 
+        // initialzing public veriables
         Array() = default;
 
         float4 size;
 
+        // initilizing terms (in constructor)
         Array(int x, int y, int z, int w)
         {
             size = float4(x, y, z, w);
@@ -1142,6 +1147,7 @@ class Array
             contents = new T[total_size];
         }
 
+        // overloading brackets and parenthasis to make a way to acsess the list
         T & operator [] (float4 key)
         {
             return contents[(int) (key.x + key.y * size.x + key.z * size.x * size.y + key.w * size.x * size.y * size.z)];
@@ -1182,9 +1188,530 @@ class Array
             return contents[x];
         }
 
+        // overloading the math operators
+        void operator += (Array <T> array2)
+        {
+            if (size.y == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    contents[x] += array2[x];
+                }
+            }
+            else if (size.z == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        contents[(int) (x + y * size.x)] += array2(x, y);
+                    }
+                }
+            }
+            else if (size.w == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            contents[(int) (x + y * size.x + z * size.x * size.y)] += array2(x, y, z);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            for (int w = 0; w < size.w; w++)
+                            {
+                                contents[(int) (x + y * size.x + z * size.x * size.y + w * size.x * size.y * size.z)] += array2(x, y, z, w);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        Array <T> operator + (Array <T> array2)
+        {
+            if (size.y == 0)
+            {
+                Array <T> array = Array <T> (size.x);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    array[x] = contents[x] + array2[x];
+                }
+                return array;
+            }
+            else if (size.z == 0)
+            {
+                Array <T> array = Array <T> (size.x, size.y);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        array(x, y) = contents[(int) (x + y * size.x)] + array2(x, y);
+                    }
+                }
+                return array;
+            }
+            else if (size.w == 0)
+            {
+                Array <T> array = Array <T> (size.x, size.y, size.z);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            array(x, y, z) = contents[(int) (x + y * size.x + z * size.x * size.y)] + array2(x, y, z);
+                        }
+                    }
+                }
+                return array;
+            }
+            else
+            {
+                Array <T> array = Array <T> (size.x, size.y, size.z, size.w);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            for (int w = 0; w < size.w; w++)
+                            {
+                                array(x, y, z) = contents[(int) (x + y * size.x + z * size.x * size.y + w * size.x * size.y * size.z)] + array2(x, y, z, w);
+                            }
+                        }
+                    }
+                }
+                return array;
+            }
+        }
+
+        void operator -= (Array <T> array2)
+        {
+            if (size.y == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    contents[x] -= array2[x];
+                }
+            }
+            else if (size.z == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        contents[(int) (x + y * size.x)] -= array2(x, y);
+                    }
+                }
+            }
+            else if (size.w == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            contents[(int) (x + y * size.x + z * size.x * size.y)] -= array2(x, y, z);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            for (int w = 0; w < size.w; w++)
+                            {
+                                contents[(int) (x + y * size.x + z * size.x * size.y + w * size.x * size.y * size.z)] -= array2(x, y, z, w);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        Array <T> operator - (Array <T> array2)
+        {
+            if (size.y == 0)
+            {
+                Array <T> array = Array <T> (size.x);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    array[x] = contents[x] - array2[x];
+                }
+                return array;
+            }
+            else if (size.z == 0)
+            {
+                Array <T> array = Array <T> (size.x, size.y);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        array(x, y) = contents[(int) (x + y * size.x)] - array2(x, y);
+                    }
+                }
+                return array;
+            }
+            else if (size.w == 0)
+            {
+                Array <T> array = Array <T> (size.x, size.y, size.z);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            array(x, y, z) = contents[(int) (x + y * size.x + z * size.x * size.y)] - array2(x, y, z);
+                        }
+                    }
+                }
+                return array;
+            }
+            else
+            {
+                Array <T> array = Array <T> (size.x, size.y, size.z, size.w);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            for (int w = 0; w < size.w; w++)
+                            {
+                                array(x, y, z) = contents[(int) (x + y * size.x + z * size.x * size.y + w * size.x * size.y * size.z)] - array2(x, y, z, w);
+                            }
+                        }
+                    }
+                }
+                return array;
+            }
+        }
+
+        void operator /= (Array <T> array2)
+        {
+            if (size.y == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    contents[x] /= array2[x];
+                }
+            }
+            else if (size.z == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        contents[(int) (x + y * size.x)] /= array2(x, y);
+                    }
+                }
+            }
+            else if (size.w == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            contents[(int) (x + y * size.x + z * size.x * size.y)] /= array2(x, y, z);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            for (int w = 0; w < size.w; w++)
+                            {
+                                contents[(int) (x + y * size.x + z * size.x * size.y + w * size.x * size.y * size.z)] /= array2(x, y, z, w);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        Array <T> operator / (Array <T> array2)
+        {
+            if (size.y == 0)
+            {
+                Array <T> array = Array <T> (size.x);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    array[x] = contents[x] / array2[x];
+                }
+                return array;
+            }
+            else if (size.z == 0)
+            {
+                Array <T> array = Array <T> (size.x, size.y);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        array(x, y) = contents[(int) (x + y * size.x)] / array2(x, y);
+                    }
+                }
+                return array;
+            }
+            else if (size.w == 0)
+            {
+                Array <T> array = Array <T> (size.x, size.y, size.z);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            array(x, y, z) = contents[(int) (x + y * size.x + z * size.x * size.y)] / array2(x, y, z);
+                        }
+                    }
+                }
+                return array;
+            }
+            else
+            {
+                Array <T> array = Array <T> (size.x, size.y, size.z, size.w);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            for (int w = 0; w < size.w; w++)
+                            {
+                                array(x, y, z) = contents[(int) (x + y * size.x + z * size.x * size.y + w * size.x * size.y * size.z)] / array2(x, y, z, w);
+                            }
+                        }
+                    }
+                }
+                return array;
+            }
+        }
+
+        void operator *= (Array <T> array2)
+        {
+            if (size.y == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    contents[x] *= array2[x];
+                }
+            }
+            else if (size.z == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        contents[(int) (x + y * size.x)] *= array2(x, y);
+                    }
+                }
+            }
+            else if (size.w == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            contents[(int) (x + y * size.x + z * size.x * size.y)] *= array2(x, y, z);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            for (int w = 0; w < size.w; w++)
+                            {
+                                contents[(int) (x + y * size.x + z * size.x * size.y + w * size.x * size.y * size.z)] *= array2(x, y, z, w);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        Array <T> operator * (Array <T> array2)
+        {
+            if (size.y == 0)
+            {
+                Array <T> array = Array <T> (size.x);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    array[x] = contents[x] * array2[x];
+                }
+                return array;
+            }
+            else if (size.z == 0)
+            {
+                Array <T> array = Array <T> (size.x, size.y);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        array(x, y) = contents[(int) (x + y * size.x)] * array2(x, y);
+                    }
+                }
+                return array;
+            }
+            else if (size.w == 0)
+            {
+                Array <T> array = Array <T> (size.x, size.y, size.z);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            array(x, y, z) = contents[(int) (x + y * size.x + z * size.x * size.y)] * array2(x, y, z);
+                        }
+                    }
+                }
+                return array;
+            }
+            else
+            {
+                Array <T> array = Array <T> (size.x, size.y, size.z, size.w);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            for (int w = 0; w < size.w; w++)
+                            {
+                                array(x, y, z) = contents[(int) (x + y * size.x + z * size.x * size.y + w * size.x * size.y * size.z)] * array2(x, y, z, w);
+                            }
+                        }
+                    }
+                }
+                return array;
+            }
+        }
+
+        // deleting items (so theres not a memory leak)
         ~Array()
         {
             delete contents;
+        }
+};
+
+
+// an array class for generating an Array class easier/quicker
+class array
+{
+
+    public:
+
+        // generating a constant array
+        template <typename t>
+        static Array <t> constant(t v, int x)
+        {
+            Array <t> array = Array <t> (x);
+            for (int x_ = 0; x_ < x; x_++)
+            {
+                array[x_] = v;
+            }
+            return array;
+        }
+
+        template <typename t>
+        static Array <t> constant(t v, int x, int y)
+        {
+            Array <t> array = Array <t> (x, y);
+            for (int x_ = 0; x_ < x; x_++)
+            {
+                for (int y_ = 0; y_ < y; y_++)
+                {
+                    array(x_, y_) = v;
+                }
+            }
+            return array;
+        }
+
+        template <typename t>
+        static Array <t> constant(t v, int x, int y, int z)
+        {
+            Array <t> array = Array <t> (x, y, z);
+            for (int x_ = 0; x_ < x; x_++)
+            {
+                for (int y_ = 0; y_ < y; y_++)
+                {
+                    for (int z_ = 0; z_ < z; z_++)
+                    {
+                        array(x_, y_, z_) = v;
+                    }
+                }
+            }
+            return array;
+        }
+
+        template <typename t>
+        static Array <t> constant(t v, int x, int y, int z, int w)
+        {
+            Array <t> array = Array <t> (x, y, z, w);
+            for (int x_ = 0; x_ < x; x_ ++)
+            {
+                for (int y_ = 0; y_ < y; y_++)
+                {
+                    for (int z_ = 0; z_ < z; z_++)
+                    {
+                        for (int w_ = 0; w_ < w; w_++)
+                        {
+                            array(x_, y_, z_, w_) = v;
+                        }
+                    }
+                }
+            }
+            return array;
         }
 };
 
