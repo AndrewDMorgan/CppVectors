@@ -972,9 +972,9 @@ float2 abs(float2 vector)
 
 
 // defining types to pass in functions
-typedef float (*FFunctionCallF4)(float4 args);  // float 4 inout, out float
-typedef float (*FFunctionCallF3)(float3 args);  // float 3 inout, out float
-typedef float (*FFunctionCallF2)(float2 args);  // float 2 inout, out float
+typedef float (*FFunctionCallF4)(float4 args);  // float 4 input, out float
+typedef float (*FFunctionCallF3)(float3 args);  // float 3 input, out float
+typedef float (*FFunctionCallF2)(float2 args);  // float 2 input, out float
 
 // distance functions
 class dists
@@ -1238,7 +1238,7 @@ class Array
                 }
             }
         }
-        
+
         Array <T> operator + (Array <T> array2)
         {
             if (size.y == 0)
@@ -1749,7 +1749,7 @@ class Array
             }
         }
 
-        // flooring the array
+        // flooring the array (and ceiling and rounding)
         Array <T> Floor()
         {
             if (size.y == 0)
@@ -1937,6 +1937,7 @@ class Array
             }
         }
 
+        // casting the array to float and int
         Array <int> Int()
         {
             if (size.y == 0)
@@ -2069,6 +2070,7 @@ class Array
 };
 
 
+// flooring, ceiling, and rounding and Array type
 template <typename T>
 Array <T> floor(Array <T> array)
 {
@@ -2087,6 +2089,7 @@ Array <T> round(Array <T> array)
     return array.Round();
 }
 
+// casting an Array type to int or float (Array <int/float>)
 template <typename T>
 static Array <int> castInt(Array <T> array)
 {
@@ -2169,4 +2172,3 @@ class array
             return array;
         }
 };
-
