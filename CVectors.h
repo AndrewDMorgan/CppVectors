@@ -1,5 +1,7 @@
 #include <iostream>
+#include <fstream>
 #include <math.h>
+#include <array>
 #include <cmath>
 
 
@@ -14,11 +16,16 @@ class float2
         float y;
 
         // the constructor(s)
-        float2 (float x, float y) {}
-
-        float2 (float x)
+        float2 (float x_, float y_)
         {
-            y = x;
+            x = x_;
+            y = y_;
+        }
+
+        float2 (float x_)
+        {
+            x = x_;
+            y = x_;
         }
         
         // overloading the operators to make it easier to use the vectors
@@ -164,18 +171,25 @@ class float3
         float x;
         float y;
         float z;
-
+        
         // the constructor(s)
-        float3 (float x, float y, float z) {}
-
-        float3 (float x)
+        float3 (float x_, float y_, float z_)
         {
-            y = x;
-            z = x;
+            x = x_;
+            y = y_;
+            z = z_;
         }
 
-        float3 (float x, float2 vector)
+        float3 (float x_)
         {
+            x = x_;
+            y = x_;
+            z = x_;
+        }
+
+        float3 (float x_, float2 vector)
+        {
+            x = x_;
             y = vector.x;
             z = vector.y;
         }
@@ -332,19 +346,28 @@ class float4
         float w;
 
         // the constructor(s)
-        float4 (float x, float y, float z, float w) {}
-
-        float4 (float x)
+        float4 (float x_, float y_, float z_, float w_)
         {
+            x = x_;
+            y = y_;
+            z = z_;
+            w = w_;
+        }
+
+        float4 (float x_)
+        {
+            x = x_;
             y = x;
             z = x;
             w = x;
         }
 
-        float4 (float x, float y)
+        float4 (float x_, float y_)
         {
-            z = x;
-            w = y;
+            x = x_;
+            y = y_;
+            z = x_;
+            w = y_;
         }
 
         float4 (float2 vector)
@@ -355,33 +378,41 @@ class float4
             w = y;
         }
 
-        float4 (float2 vector, float z, float w)
+        float4 (float2 vector, float z_, float w_)
         {
             x = vector.x;
             y = vector.y;
+            z = z_;
+            w = w_;
         }
 
-        float4 (float x, float y, float2 vector)
+        float4 (float x_, float y_, float2 vector)
         {
+            x = x_;
+            y = y_;
             z = vector.x;
             w = vector.y;
         }
 
-        float4 (float x, float2 vector, float w)
+        float4 (float x_, float2 vector, float w_)
         {
+            x = x_;
             y = vector.x;
             z = vector.y;
+            w = w_;
         }
 
-        float4 (float3 vector, float w)
+        float4 (float3 vector, float w_)
         {
             x = vector.x;
             y = vector.y;
             z = vector.z;
+            w = w_;
         }
 
-        float4 (float x, float3 vector)
+        float4 (float x_, float3 vector)
         {
+            x = x_;
             y = vector.x;
             z = vector.y;
             w = vector.z;
@@ -939,39 +970,221 @@ float2 abs(float2 vector)
     return float2(abs(vector.x), abs(vector.y));
 }
 
+
+// defining types to pass in functions
+typedef float (*FFunctionCallF4)(float4 args);  // float 4 inout, out float
+typedef float (*FFunctionCallF3)(float3 args);  // float 3 inout, out float
+typedef float (*FFunctionCallF2)(float2 args);  // float 2 inout, out float
+
 // distance functions
 class dists
 {
-    // distance to a point
-    float point(float3 p1, float3 p2)
-    {
-        return length(p1, p2);
-    }
 
-    float point(float2 p1, float2 p2)
-    {
-        return length(p1, p2);
-    }
+    public:
 
-    float point(float4 p1, float4 p2)
-    {
-        return length(p1, p2);
-    }
+        // distance to a point
+        static float point(float3 p1, float3 p2)
+        {
+            return length(p1, p2);
+        }
 
-    // distance to a circle/sphere/hyper sphere
-    float hyperSphere(float4 p1, float4 p2, float r)
-    {
-        return length(p1, p2) - r;
-    }
+        static float point(float2 p1, float2 p2)
+        {
+            return length(p1, p2);
+        }
 
-    float sphere(float3 p1, float3 p2, float r)
-    {
-        return length(p1, p2) - r;
-    }
+        static float point(float4 p1, float4 p2)
+        {
+            return length(p1, p2);
+        }
 
-    float circle(float2 p1, float2 p2, float r)
-    {
-        return length(p1, p2) - r;
-    }
+        // distance to a circle/sphere/hyper sphere
+        static float hyperSphere(float4 p1, float4 p2, float r)
+        {
+            return length(p1, p2) - r;
+        }
+
+        static float sphere(float3 p1, float3 p2, float r)
+        {
+            return length(p1, p2) - r;
+        }
+
+        static float circle(float2 p1, float2 p2, float r)
+        {
+            return length(p1, p2) - r;
+        }
+
+        // returns the normal based on the distances to points (2D - 4D)
+        static float3 normal(FFunctionCallF3 distance_function, float3 p)
+        {
+            float d = distance_function(p);
+            
+            float3 normal = float3(d) - float3(
+                distance_function(p - float3(0.01, 0   , 0   )),
+                distance_function(p - float3(0   , 0.01, 0   )),
+                distance_function(p - float3(0   , 0   , 0.01)));
+            
+            return normalize(normal);
+        }
+
+        static float2 normal(FFunctionCallF2 distance_function, float2 p)
+        {
+            float d = distance_function(p);
+            
+            float2 normal = float2(d) - float2(
+                distance_function(p - float2(0.01, 0   )),
+                distance_function(p - float2(0   , 0.01)));
+            
+            return normalize(normal);
+        }
+
+        static float4 normal(FFunctionCallF4 distance_function, float4 p)
+        {
+            float d = distance_function(p);
+            
+            float4 normal = float4(d) - float4(
+                distance_function(p - float4(0.01, 0   , 0   , 0   )),
+                distance_function(p - float4(0   , 0.01, 0   , 0   )),
+                distance_function(p - float4(0   , 0   , 0.01, 0   )),
+                distance_function(p - float4(0   , 0   , 0   , 0.01)));
+            
+            return normalize(normal);
+        }
+};
+
+
+// operates on files (reading, writing, ect...)
+class file
+{
+
+    public:
+
+        // converts the data in a file into a string
+        static std::string read(std::string file_name)
+        {
+            // isnt keeping \n
+            std::string o = "";
+            std::fstream my_file;
+            my_file.open(file_name, std::ios::in);
+            if (!my_file) {
+                std::cout<<"Error: Couldn't load file"<<std::endl;
+            }
+            else {
+                char ch;
+
+                while (true) {
+                    my_file >> ch;
+                    if (my_file.eof())
+                        break;
+
+                    o += std::string(1, ch);
+                }
+            }
+            my_file.close();
+            return o;
+        }
+        
+        static void write(std::string file_name, std::string contents)
+        {
+            std::fstream my_file;
+            my_file.open(file_name, std::ios::out);
+            if (!my_file) {
+                std::cout<< "Error: Couldn't create file!";
+            }
+            else {
+                my_file << contents;
+                my_file.close();
+            }
+        }
+};
+
+
+template<typename T>
+class Array
+{
+
+    private:
+
+        int total_size;
+        T* contents;
+
+    public:
+
+        Array() = default;
+
+        float4 size;
+
+        Array(int x, int y, int z, int w)
+        {
+            size = float4(x, y, z, w);
+            total_size = x * y * z * w;
+            contents = new T[total_size];
+        }
+
+        Array(int x, int y, int z)
+        {
+            size = float4(x, y, z, 0);
+            total_size = x * y * z;
+            contents = new T[total_size];
+        }
+
+        Array(int x, int y)
+        {
+            size = float4(x, y, 0, 0);
+            total_size = x * y;
+            contents = new T[total_size];
+        }
+        
+        Array(int x)
+        {
+            size = float4(x, 0, 0, 0);
+            total_size = x;
+            contents = new T[total_size];
+        }
+
+        T & operator [] (float4 key)
+        {
+            return contents[(int) (key.x + key.y * size.x + key.z * size.x * size.y + key.w * size.x * size.y * size.z)];
+        }
+
+        T & operator [] (float3 key)
+        {
+            return contents[(int) (key.x + key.y * size.x + key.z * size.x * size.y)];
+        }
+
+        T & operator [] (float2 key)
+        {
+            return contents[(int) (key.x + key.y * size.x)];
+        }
+
+        T & operator [] (int key)
+        {
+            return contents[key];
+        }
+
+        T & operator () (int x, int y, int z, int w)
+        {
+            return contents[(int) (x + y * size.x + z * size.x * size.y + w * size.x * size.y * size.z)];
+        }
+
+        T & operator () (int x, int y, int z)
+        {
+            return contents[(int) (x + y * size.x + z * size.x * size.y)];
+        }
+
+        T & operator () (int x, int y)
+        {
+            return contents[(int) (x + y * size.x)];
+        }
+
+        T & operator () (int x)
+        {
+            return contents[x];
+        }
+
+        ~Array()
+        {
+            delete contents;
+        }
 };
 
