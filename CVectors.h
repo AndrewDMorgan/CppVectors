@@ -1749,12 +1749,355 @@ class Array
             }
         }
 
+        // flooring the array
+        Array <T> Floor()
+        {
+            if (size.y == 0)
+            {
+                Array <T> array = Array <T> (size.x);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    array[x] = floor(contents[x]);
+                }
+
+                return array;
+            }
+            else if (size.z == 0)
+            {
+                Array <T> array = Array <T> (size.x, size.y);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        array(x, y) = floor(contents[(int) (x + y * size.x)]);
+                    }
+                }
+                return array;
+            }
+            else if (size.w == 0)
+            {
+                Array <T> array = Array <T> (size.x, size.y, size.z);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            array(x, y, z) = floor(contents[(int) (x + y * size.x + z * size.x * size.y)]);
+                        }
+                    }
+                }
+                return array;
+            }
+            else
+            {
+                Array <T> array = Array <T> (size.x, size.y, size.z, size.w);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            for (int w = 0; w < size.w; w++)
+                            {
+                                array(x, y, z) = floor(contents[(int) (x + y * size.x + z * size.x * size.y + w * size.x * size.y * size.z)]);
+                            }
+                        }
+                    }
+                }
+                return array;
+            }
+        }
+
+        Array <T> Ceil()
+        {
+            if (size.y == 0)
+            {
+                Array <T> array = Array <T> (size.x);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    array[x] = ceil(contents[x]);
+                }
+                return array;
+            }
+            else if (size.z == 0)
+            {
+                Array <T> array = Array <T> (size.x, size.y);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        array(x, y) = ceil(contents[(int) (x + y * size.x)]);
+                    }
+                }
+                return array;
+            }
+            else if (size.w == 0)
+            {
+                Array <T> array = Array <T> (size.x, size.y, size.z);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            array(x, y, z) = ceil(contents[(int) (x + y * size.x + z * size.x * size.y)]);
+                        }
+                    }
+                }
+                return array;
+            }
+            else
+            {
+                Array <T> array = Array <T> (size.x, size.y, size.z, size.w);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            for (int w = 0; w < size.w; w++)
+                            {
+                                array(x, y, z) = ceil(contents[(int) (x + y * size.x + z * size.x * size.y + w * size.x * size.y * size.z)]);
+                            }
+                        }
+                    }
+                }
+                return array;
+            }
+        }
+
+        Array <T> Round()
+        {
+            if (size.y == 0)
+            {
+                Array <T> array = Array <T> (size.x);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    array[x] = round(contents[x]);
+                }
+                return array;
+            }
+            else if (size.z == 0)
+            {
+                Array <T> array = Array <T> (size.x, size.y);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        array(x, y) = round(contents[(int) (x + y * size.x)]);
+                    }
+                }
+                return array;
+            }
+            else if (size.w == 0)
+            {
+                Array <T> array = Array <T> (size.x, size.y, size.z);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            array(x, y, z) = round(contents[(int) (x + y * size.x + z * size.x * size.y)]);
+                        }
+                    }
+                }
+                return array;
+            }
+            else
+            {
+                Array <T> array = Array <T> (size.x, size.y, size.z, size.w);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            for (int w = 0; w < size.w; w++)
+                            {
+                                array(x, y, z) = floor(contents[(int) (x + y * size.x + z * size.x * size.y + w * size.x * size.y * size.z)]);
+                            }
+                        }
+                    }
+                }
+                return array;
+            }
+        }
+
+        Array <int> Int()
+        {
+            if (size.y == 0)
+            {
+                Array <int> array = Array <int> (size.x);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    array[x] = (int) (contents[x]);
+                }
+                return array;
+            }
+            else if (size.z == 0)
+            {
+                Array <int> array = Array <int> (size.x, size.y);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        array(x, y) = (int) (contents[(int) (x + y * size.x)]);
+                    }
+                }
+                return array;
+            }
+            else if (size.w == 0)
+            {
+                Array <int> array = Array <int> (size.x, size.y, size.z);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            array(x, y, z) = (int) (contents[(int) (x + y * size.x + z * size.x * size.y)]);
+                        }
+                    }
+                }
+                return array;
+            }
+            else
+            {
+                Array <int> array = Array <int> (size.x, size.y, size.z, size.w);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            for (int w = 0; w < size.w; w++)
+                            {
+                                array(x, y, z) = (int) (contents[(int) (x + y * size.x + z * size.x * size.y + w * size.x * size.y * size.z)]);
+                            }
+                        }
+                    }
+                }
+                return array;
+            }
+        }
+
+        Array <float> Float()
+        {
+            if (size.y == 0)
+            {
+                Array <float> array = Array <float> (size.x);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    array[x] = (float) (contents[x]);
+                }
+                return array;
+            }
+            else if (size.z == 0)
+            {
+                Array <float> array = Array <float> (size.x, size.y);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        array(x, y) = (float) (contents[(int) (x + y * size.x)]);
+                    }
+                }
+                return array;
+            }
+            else if (size.w == 0)
+            {
+                Array <float> array = Array <float> (size.x, size.y, size.z);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            array(x, y, z) = (float) (contents[(int) (x + y * size.x + z * size.x * size.y)]);
+                        }
+                    }
+                }
+                return array;
+            }
+            else
+            {
+                Array <float> array = Array <float> (size.x, size.y, size.z, size.w);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            for (int w = 0; w < size.w; w++)
+                            {
+                                array(x, y, z) = (float) (contents[(int) (x + y * size.x + z * size.x * size.y + w * size.x * size.y * size.z)]);
+                            }
+                        }
+                    }
+                }
+                return array;
+            }
+        }
+
         // deleting items (so theres not a memory leak)
         ~Array()
         {
             delete contents;
         }
 };
+
+
+template <typename T>
+Array <T> floor(Array <T> array)
+{
+    return array.Floor();
+}
+
+template <typename T>
+Array <T> ceil(Array <T> array)
+{
+    return array.Ceil();
+}
+
+template <typename T>
+Array <T> round(Array <T> array)
+{
+    return array.Round();
+}
+
+template <typename T>
+static Array <int> castInt(Array <T> array)
+{
+    return array.Int();
+}
+
+template <typename T>
+static Array <float> castFloat(Array <T> array)
+{
+    return array.Float();
+}
 
 
 // an array class for generating an Array class easier/quicker
