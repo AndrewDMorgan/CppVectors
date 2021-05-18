@@ -1637,6 +1637,118 @@ class Array
             }
         }
 
+        void operator %= (Array <T> array2)
+        {
+            if (size.y == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    contents[x] %= array2[x];
+                }
+            }
+            else if (size.z == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        contents[(int) (x + y * size.x)] %= array2(x, y);
+                    }
+                }
+            }
+            else if (size.w == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            contents[(int) (x + y * size.x + z * size.x * size.y)] %= array2(x, y, z);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            for (int w = 0; w < size.w; w++)
+                            {
+                                contents[(int) (x + y * size.x + z * size.x * size.y + w * size.x * size.y * size.z)] %= array2(x, y, z, w);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        Array <T> operator % (Array <T> array2)
+        {
+            if (size.y == 0)
+            {
+                Array <T> array = Array <T> (size.x);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    array[x] = contents[x] % array2[x];
+                }
+                return array;
+            }
+            else if (size.z == 0)
+            {
+                Array <T> array = Array <T> (size.x, size.y);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        array(x, y) = contents[(int) (x + y * size.x)] % array2(x, y);
+                    }
+                }
+                return array;
+            }
+            else if (size.w == 0)
+            {
+                Array <T> array = Array <T> (size.x, size.y, size.z);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            array(x, y, z) = contents[(int) (x + y * size.x + z * size.x * size.y)] % array2(x, y, z);
+                        }
+                    }
+                }
+                return array;
+            }
+            else
+            {
+                Array <T> array = Array <T> (size.x, size.y, size.z, size.w);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            for (int w = 0; w < size.w; w++)
+                            {
+                                array(x, y, z) = contents[(int) (x + y * size.x + z * size.x * size.y + w * size.x * size.y * size.z)] % array2(x, y, z, w);
+                            }
+                        }
+                    }
+                }
+                return array;
+            }
+        }
+
         // deleting items (so theres not a memory leak)
         ~Array()
         {
@@ -1652,10 +1764,10 @@ class array
     public:
 
         // generating a constant array
-        template <typename t>
-        static Array <t> constant(t v, int x)
+        template <typename T>
+        static Array <T> constant(T v, int x)
         {
-            Array <t> array = Array <t> (x);
+            Array <T> array = Array <T> (x);
             for (int x_ = 0; x_ < x; x_++)
             {
                 array[x_] = v;
@@ -1663,10 +1775,10 @@ class array
             return array;
         }
 
-        template <typename t>
-        static Array <t> constant(t v, int x, int y)
+        template <typename T>
+        static Array <T> constant(T v, int x, int y)
         {
-            Array <t> array = Array <t> (x, y);
+            Array <T> array = Array <T> (x, y);
             for (int x_ = 0; x_ < x; x_++)
             {
                 for (int y_ = 0; y_ < y; y_++)
@@ -1677,10 +1789,10 @@ class array
             return array;
         }
 
-        template <typename t>
-        static Array <t> constant(t v, int x, int y, int z)
+        template <typename T>
+        static Array <T> constant(T v, int x, int y, int z)
         {
-            Array <t> array = Array <t> (x, y, z);
+            Array <T> array = Array <T> (x, y, z);
             for (int x_ = 0; x_ < x; x_++)
             {
                 for (int y_ = 0; y_ < y; y_++)
@@ -1694,10 +1806,10 @@ class array
             return array;
         }
 
-        template <typename t>
-        static Array <t> constant(t v, int x, int y, int z, int w)
+        template <typename T>
+        static Array <T> constant(T v, int x, int y, int z, int w)
         {
-            Array <t> array = Array <t> (x, y, z, w);
+            Array <T> array = Array <T> (x, y, z, w);
             for (int x_ = 0; x_ < x; x_ ++)
             {
                 for (int y_ = 0; y_ < y; y_++)
