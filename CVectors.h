@@ -2062,6 +2062,402 @@ class Array
             }
         }
 
+        bool operator == (Array <T> array)
+        {
+            if (size.y == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    if (contents[x] != array[x])
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else if (size.z == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        if (contents[(int) (x + y * size.x)] != array(x, y))
+                        {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+            else if (size.w == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            if (contents[(int) (x + y * size.x + z * size.x * size.y)] != array(x, y, z))
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+            else
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            for (int w = 0; w < size.w; w++)
+                            {
+                              if (contents[(int) (x + y * size.x + z * size.x * size.y + w * size.x * size.y * size.z)] != array(x, y, z, w))
+                              {
+                                  return false;
+                              }
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+        }
+
+        bool operator >= (Array <T> array)
+        {
+            if (size.y == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    if (! contents[x] >= array[x])
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else if (size.z == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        if (! contents[(int) (x + y * size.y)] >= array(x, y))
+                        {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+            else if (size.w == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            if (! contents[(int) (x + y * size.x + z * size.x * size.y)] >= array(x, y, z))
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+            else
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            for (int w = 0; w < size.w; w++)
+                            {
+                              if (! contents[(int) (x + y * size.x + z * size.x * size.y + w * size.x * size.y * size.z)] >= array(x, y, z, w))
+                              {
+                                  return false;
+                              }
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+        }
+
+        bool operator <= (Array <T> array)
+        {
+            if (size.y == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    if (! contents[x] <= array[x])
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else if (size.z == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        if (! contents[(int) (x + y * size.y)] <= array(x, y))
+                        {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+            else if (size.w == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            if (! contents[(int) (x + y * size.x + z * size.x * size.y)] <= array(x, y, z))
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+            else
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            for (int w = 0; w < size.w; w++)
+                            {
+                              if (! contents[(int) (x + y * size.x + z * size.x * size.y + w * size.x * size.y * size.z)] <= array(x, y, z, w))
+                              {
+                                  return false;
+                              }
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+        }
+
+        bool operator > (Array <T> array)
+        {
+            if (size.y == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    if (! contents[x] > array[x])
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else if (size.z == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        if (! contents[(int) (x + y * size.y)] > array(x, y))
+                        {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+            else if (size.w == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            if (! contents[(int) (x + y * size.x + z * size.x * size.y)] > array(x, y, z))
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+            else
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            for (int w = 0; w < size.w; w++)
+                            {
+                              if (! contents[(int) (x + y * size.x + z * size.x * size.y + w * size.x * size.y * size.z)] > array(x, y, z, w))
+                              {
+                                  return false;
+                              }
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+        }
+
+        bool operator < (Array <T> array)
+        {
+            if (size.y == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    if (! contents[x] < array[x])
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else if (size.z == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        if (! contents[(int) (x + y * size.y)] < array(x, y))
+                        {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+            else if (size.w == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            if (! contents[(int) (x + y * size.x + z * size.x * size.y)] < array(x, y, z))
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+            else
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            for (int w = 0; w < size.w; w++)
+                            {
+                              if (! contents[(int) (x + y * size.x + z * size.x * size.y + w * size.x * size.y * size.z)] < array(x, y, z, w))
+                              {
+                                  return false;
+                              }
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+        }
+
+        bool operator != (Array <T> array)
+        {
+            if (size.y == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    if (contents[x] == array[x])
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else if (size.z == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        if (contents[(int) (x + y * size.y)] == array(x, y))
+                        {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+            else if (size.w == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            if (contents[(int) (x + y * size.x + z * size.x * size.y)] == array(x, y, z))
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+            else
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            for (int w = 0; w < size.w; w++)
+                            {
+                              if (contents[(int) (x + y * size.x + z * size.x * size.y + w * size.x * size.y * size.z)] == array(x, y, z, w))
+                              {
+                                  return false;
+                              }
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+        }
+
         // deleting items (so theres not a memory leak)
         ~Array()
         {
@@ -2172,3 +2568,4 @@ class array
             return array;
         }
 };
+
