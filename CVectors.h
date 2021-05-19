@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <math.h>
+#include <time.h>
 #include <array>
 #include <cmath>
 
@@ -2062,6 +2063,68 @@ class Array
             }
         }
 
+        Array <float> fract()
+        {
+            if (size.y == 0)
+            {
+                Array <float> array = Array <float> (size.x);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    array[x] = fract(contents[x]);
+                }
+                return array;
+            }
+            else if (size.z == 0)
+            {
+                Array <float> array = Array <float> (size.x, size.y);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        array(x, y) = fract(contents[(int) (x + y * size.x)]);
+                    }
+                }
+                return array;
+            }
+            else if (size.w == 0)
+            {
+                Array <float> array = Array <float> (size.x, size.y, size.z);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            array(x, y, z) = fract(contents[(int) (x + y * size.x + z * size.x * size.y)]);
+                        }
+                    }
+                }
+                return array;
+            }
+            else
+            {
+                Array <float> array = Array <float> (size.x, size.y, size.z, size.w);
+
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            for (int w = 0; w < size.w; w++)
+                            {
+                                array(x, y, z) = fract(contents[(int) (x + y * size.x + z * size.x * size.y + w * size.x * size.y * size.z)]);
+                            }
+                        }
+                    }
+                }
+                return array;
+            }
+        }
+
         bool operator == (Array <T> array)
         {
             if (size.y == 0)
@@ -2480,6 +2543,12 @@ Array <T> ceil(Array <T> array)
 }
 
 template <typename T>
+Array <T> fract(Array <T> array)
+{
+    return array.fract();
+}
+
+template <typename T>
 Array <T> round(Array <T> array)
 {
     return array.Round();
@@ -2566,6 +2635,84 @@ class array
                 }
             }
             return array;
+        }
+
+        template <typename T>
+        static Array <T> random(int sx, int mir, int mar)
+        {
+            srand((unsigned)time(NULL));
+
+            Array <T> ar = Array <T> (sx);
+
+            for (int x = 0; x < sx; x++)
+            {
+                ar[x] = (T) (((float) rand() / RAND_MAX) * (mar - mir) + mir);
+            }
+
+            return ar;
+        }
+
+        template <typename T>
+        static Array <T> random(int sx, int sy, int mir, int mar)
+        {
+            srand((unsigned)time(NULL));
+
+            Array <T> ar = Array <T> (sx, sy);
+
+            for (int x = 0; x < sx; x++)
+            {
+                for (int y = 0; y < sy; y++)
+                {
+                    ar(x, y) = (T) (((float) rand() / RAND_MAX) * (mar - mir) + mir);
+                }
+            }
+
+            return ar;
+        }
+
+        template <typename T>
+        static Array <T> random(int sx, int sy, int sz, int mir, int mar)
+        {
+            srand((unsigned)time(NULL));
+
+            Array <T> ar = Array <T> (sx, sy, sz);
+
+            for (int x = 0; x < sx; x++)
+            {
+                for (int y = 0; y < sy; y++)
+                {
+                    for (int z = 0; z < sz; z++)
+                    {
+                        ar(x, y, z) = (T) (((float) rand() / RAND_MAX) * (mar - mir) + mir);
+                    }
+                }
+            }
+
+            return ar;
+        }
+
+        template <typename T>
+        static Array <T> random(int sx, int sy, int sz, int sw, int mir, int mar)
+        {
+            srand((unsigned)time(NULL));
+
+            Array <T> ar = Array <T> (sx, sy, sz, sw);
+
+            for (int x = 0; x < sx; x++)
+            {
+                for (int y = 0; y < sy; y++)
+                {
+                    for (int z = 0; z < sz; z++)
+                    {
+                        for (int w = 0; w < sw; w++)
+                        {
+                            ar(x, y, z, w) = (T) (((float) rand() / RAND_MAX) * (mar - mir) + mir);
+                        }
+                    }
+                }
+            }
+
+            return ar;
         }
 };
 
