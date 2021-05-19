@@ -2521,7 +2521,7 @@ class Array
             }
         }
 
-        float* index(T key)
+        float4 index(T key)
         {
             if (size.y == 0)
             {
@@ -2529,9 +2529,7 @@ class Array
                 {
                     if (contents[x] == key)
                     {
-                        float l[1];
-                        l[0] = x;
-                        return l;
+                        return float4(x, 0, 0, 0);
                     }
                 }
             }
@@ -2543,10 +2541,7 @@ class Array
                     {
                         if (contents[(int) (x + y * size.x)] == key)
                         {
-                            float l[2];
-                            l[0] = x;
-                            l[1] = y;
-                            return l;
+                            return float4(x, y, 0, 0);
                         }
                     }
                 }
@@ -2561,11 +2556,7 @@ class Array
                         {
                             if (contents[(int) (x + y * size.x + z * size.x * size.y)] == key)
                             {
-                                float l[3];
-                                l[0] = x;
-                                l[1] = y;
-                                l[2] = z;
-                                return l;
+                                return float4(x, y, z, 0);
                             }
                         }
                     }
@@ -2583,12 +2574,7 @@ class Array
                             {
                                 if (contents[(int) (x + y * size.x + z * size.x * size.y + w * size.x * size.y * size.z)] == key)
                                 {
-                                    float l[4];
-                                    l[0] = x;
-                                    l[1] = y;
-                                    l[2] = z;
-                                    l[3] = w;
-                                    return l;
+                                    return float4(x, y, z, w);
                                 }
                             }
                         }
@@ -3024,9 +3010,9 @@ class Noise  // nothing in this class is complete (it may or may not be working)
                                         }
 
                                         float min_dist = sqrt(min <float> (nabors));
-                                        float* min_dist_index = nabors.index(min_dist);
-
-                                        float height = nabors(min_dist_index[0], min_dist_index[1], min_dist_index[2], min_dist_index[3]);
+                                        float4 min_dist_index = nabors.index(min_dist);
+                                        
+                                        float height = nabors(min_dist_index.x, min_dist_index.y, min_dist_index.z, min_dist_index.w);
                                         noise(x, y, z, w) = height;  // scale this value so in the end it will be from 0 - 1
                                     }
                                 }
