@@ -2521,6 +2521,82 @@ class Array
             }
         }
 
+        float* index(T key)
+        {
+            if (size.y == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    if (contents[x] == key)
+                    {
+                        float l[1];
+                        l[0] = x;
+                        return l;
+                    }
+                }
+            }
+            else if (size.z == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        if (contents[(int) (x + y * size.x)] == key)
+                        {
+                            float l[2];
+                            l[0] = x;
+                            l[1] = y;
+                            return l;
+                        }
+                    }
+                }
+            }
+            else if (size.w == 0)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            if (contents[(int) (x + y * size.x + z * size.x * size.y)] == key)
+                            {
+                                float l[3];
+                                l[0] = x;
+                                l[1] = y;
+                                l[2] = z;
+                                return l;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    for (int y = 0; y < size.y; y++)
+                    {
+                        for (int z = 0; z < size.z; z++)
+                        {
+                            for (int w = 0; w < size.w; w++)
+                            {
+                                if (contents[(int) (x + y * size.x + z * size.x * size.y + w * size.x * size.y * size.z)] == key)
+                                {
+                                    float l[4];
+                                    l[0] = x;
+                                    l[1] = y;
+                                    l[2] = z;
+                                    l[3] = w;
+                                    return l;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         // deleting items (so theres not a memory leak)
         ~Array()
         {
@@ -2556,15 +2632,129 @@ Array <T> round(Array <T> array)
 
 // casting an Array type to int or float (Array <int/float>)
 template <typename T>
-static Array <int> castInt(Array <T> array)
+Array <int> castInt(Array <T> array)
 {
     return array.Int();
 }
 
 template <typename T>
-static Array <float> castFloat(Array <T> array)
+Array <float> castFloat(Array <T> array)
 {
     return array.Float();
+}
+
+template <typename T>
+T min(Array <T> array)
+{
+    if (array.size.y == 0)
+    {
+        T smallest = array[0];
+        for (int i = 0; i < array.size.x; i++)
+        {
+            if (array[i] < smallest)
+            {
+                smallest = array[i];
+            }
+        }
+
+        return smallest;
+    }
+    else if (array.size.z == 0)
+    {
+        T smallest = array[0];
+        for (int i = 0; i < array.size.x * array.size.y; i++)
+        {
+            if (array[i] < smallest)
+            {
+                smallest = array[i];
+            }
+        }
+
+        return smallest;
+    }
+    else if (array.size.w == 0)
+    {
+        T smallest = array[0];
+        for (int i = 0; i < array.size.x * array.size.y * array.size.z; i++)
+        {
+            if (array[i] < smallest)
+            {
+                smallest = array[i];
+            }
+        }
+
+        return smallest;
+    }
+    else
+    {
+        T smallest = array[0];
+        for (int i = 0; i < array.size.x * array.size.y * array.size.z * array.size.w; i++)
+        {
+            if (array[i] < smallest)
+            {
+                smallest = array[i];
+            }
+        }
+
+        return smallest;
+    }
+}
+
+template <typename T>
+T max(Array <T> array)
+{
+    if (array.size.y == 0)
+    {
+        T largest = array[0];
+        for (int i = 0; i < array.size.x; i++)
+        {
+            if (array[i] > largest)
+            {
+                largest = array[i];
+            }
+        }
+
+        return largest;
+    }
+    else if (array.size.z == 0)
+    {
+        T largest = array[0];
+        for (int i = 0; i < array.size.x * array.size.y; i++)
+        {
+            if (array[i] > largest)
+            {
+                largest = array[i];
+            }
+        }
+
+        return largest;
+    }
+    else if (array.size.w == 0)
+    {
+        T largest = array[0];
+        for (int i = 0; i < array.size.x * array.size.y * array.size.z; i++)
+        {
+            if (array[i] > largest)
+            {
+                largest = array[i];
+            }
+        }
+
+        return largest;
+    }
+    else
+    {
+        T largest = array[0];
+        for (int i = 0; i < array.size.x * array.size.y * array.size.z * array.size.w; i++)
+        {
+            if (array[i] > largest)
+            {
+                largest = array[i];
+            }
+        }
+
+        return largest;
+    }
 }
 
 
@@ -2714,5 +2904,154 @@ class array
 
             return ar;
         }
+};
+
+
+// a class for noise algerithms
+class Noise  // nothing in this class is complete (it may or may not be working)
+{
+    public:
+
+        // worly noise
+        class Worly
+        {
+
+            private:
+
+                // private veriables
+                int octaves;
+                float scale;
+                float persitance;
+                float luclarity;
+
+            public:
+
+                // the noise array that stores the generated noise
+                Array <float> noise;
+
+                // 4D noise
+                Worly(int sizeX, int sizeY, int sizeZ, int sizeW, int octaves_, float scale_, float persitance_, float luclarity_)
+                {
+                    // initializing some things
+                    octaves = octaves_;
+                    scale = scale_;
+                    persitance = persitance_;
+                    luclarity = luclarity_;
+                    noise = Array <float> (sizeX, sizeY, sizeZ, sizeW);
+
+                    float4 size = float4(sizeX, sizeY, sizeZ, sizeW);
+
+                    float current_scale = scale;
+                    float current_height = 1;
+
+                    // generating the scaler (to scale things between -1 and 1)
+                    float max_height = 0;
+                    for (int o = 0; o < octaves; o++)
+                    {
+                        max_height += current_height;
+                        current_height *= persitance;
+                    }
+
+                    current_height = 1;
+
+                    srand((unsigned)time(NULL));
+                    
+                    Array <float4> offsets = Array <float4> (size.x, size.y, size.z, size.w);
+                    for (int x = 0; x < size.x; x++)
+                    {
+                        for (int y = 0; y < size.y; y++)
+                        {
+                            for (int z = 0; z < size.z; z++)
+                            {
+                                for (int w = 0; w < size.w; w++)
+                                {
+                                    offsets(x, y, z, w) = float4((float) rand() / RAND_MAX * 2 - 1, (float) rand() / RAND_MAX * 2 - 1, (float) rand() / RAND_MAX * 2 - 1, (float) rand() / RAND_MAX * 2 - 1);
+                                }
+                            }
+                        }
+                    }
+
+                    // generating the noise
+                    for (int o = 0; o < octaves; o++)
+                    {
+                        int i;
+                        float nx;
+                        float ny;
+                        float nz;
+                        float nw;
+                        float distX;
+                        float distY;
+                        float distZ;
+                        float distW;
+                        float4 offset;
+                        Array <float> nabors = Array <float> (81);
+
+                        for (int x = 0; x < size.x; x++)
+                        {
+                            for (int y = 0; y < size.y; y++)
+                            {
+                                for (int z = 0; z < size.z; z++)
+                                {
+                                    for (int w = 0; w < size.w; w++)
+                                    {
+                                        i = 0;
+
+                                        for (int X = -1; X < 2; X++)
+                                        {
+                                            for (int Y = -1; Y < 2; Y++)
+                                            {
+                                                for (int Z = -1; Z < 2; Z++)
+                                                {
+                                                    for (int W = -1; W < 2; W++)
+                                                    {
+                                                        offset = offsets(x + X, y + Y, z + Z, w + W);
+
+                                                        nx = (X * current_scale) + offset.x + x * current_scale;
+                                                        ny = (Y * current_scale) + offset.y + y * current_scale;
+                                                        nz = (Z * current_scale) + offset.z + z * current_scale;
+                                                        nw = (W * current_scale) + offset.w + w * current_scale;
+
+                                                        distX = pow((nx - x), 2);
+                                                        distY = pow((ny - y), 2);
+                                                        distZ = pow((nz - z), 2);
+                                                        distW = pow((nw - w), 2);
+
+                                                        nabors[i] = distX + distY + distZ + distW;
+                                                        i++;
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        float min_dist = sqrt(min <float> (nabors));
+                                        float* min_dist_index = nabors.index(min_dist);
+
+                                        float height = nabors(min_dist_index[0], min_dist_index[1], min_dist_index[2], min_dist_index[3]);
+                                        noise(x, y, z, w) = height;  // scale this value so in the end it will be from 0 - 1
+                                    }
+                                }
+                            }
+                        }
+                        
+                        current_scale *= luclarity;
+                        current_height *= persitance;
+                    }
+                }
+
+                Worly(int sizeX, int sizeY, int sizeZ, int octaves_, float scale_, float persitance_, float luclarity_)
+                {
+                    noise = Array <float> (sizeX, sizeY, sizeZ);
+                }
+
+                Worly(int sizeX, int sizeY, int octaves_, float scale_, float persitance_, float luclarity_)
+                {
+                    noise = Array <float> (sizeX, sizeY);
+                }
+
+                ~Worly()
+                {
+                    
+                }
+        };
 };
 
