@@ -2970,7 +2970,7 @@ class Noise  // nothing in this class is complete (it may or may not be working)
                         float distZ;
                         float distW;
                         float4 offset;
-                        Array <float> nabors = Array <float> (81);
+                        Array <float> nabors = Array <float> (27);
 
                         for (int x = 0; x < size.x; x++)
                         {
@@ -3040,4 +3040,3 @@ class Noise  // nothing in this class is complete (it may or may not be working)
                 }
         };
 };
-
