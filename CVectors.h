@@ -972,6 +972,47 @@ float2 abs(float2 vector)
 }
 
 
+// sin functions for vectors
+float4 sin(float4 vector)
+{
+    return float4(sin(vector.x), sin(vector.y), sin(vector.z), sin(vector.w));
+}
+
+float3 sin(float3 vector)
+{
+    return float3(sin(vector.x), sin(vector.y), sin(vector.z));
+}
+
+float2 sin(float2 vector)
+{
+    return float2(sin(vector.x), sin(vector.y));
+}
+
+// cosine functions for vectors
+float4 cos(float4 vector)
+{
+    return float4(cos(vector.x), cos(vector.y), cos(vector.z), cos(vector.w));
+}
+
+float3 cos(float3 vector)
+{
+    return float3(cos(vector.x), cos(vector.y), cos(vector.z));
+}
+
+float2 cos(float2 vector)
+{
+    return float2(cos(vector.x), cos(vector.y));
+}
+
+// a function that takes in a float3 and returns a randomized float3
+float3 random(float3 co)
+{
+    float3 p = float3(dot(co, float3(127.1, 311.7, 74.7)), dot(co, float3(269.5, 183.3, 246.1)), dot(co, float3(113.5, 271.9, 124.6)));
+    float3 output = fract(sin(p) * float3(43758.5453123, 43758.5453123, 43758.5453123));
+    return output;
+}
+
+
 // defining types to pass in functions
 typedef float (*FFunctionCallF4)(float4 args);  // float 4 input, out float
 typedef float (*FFunctionCallF3)(float3 args);  // float 3 input, out float
@@ -3013,7 +3054,7 @@ class Noise  // nothing in this class is complete (it may or may not be working)
                                         float4 min_dist_index = nabors.index(min_dist);
                                         
                                         float height = nabors(min_dist_index.x, min_dist_index.y, min_dist_index.z, min_dist_index.w);
-                                        noise(x, y, z, w) = height;  // scale this value so in the end it will be from 0 - 1
+                                        noise(x, y, z, w) = height;  // scale this value so in the end it will be from 0 - 1  (need noise to start at 0 and this to be added)
                                     }
                                 }
                             }
@@ -3039,4 +3080,55 @@ class Noise  // nothing in this class is complete (it may or may not be working)
                     
                 }
         };
+
+    private:
+
+        // generates one octave of worly noise (needed for octave worly noise)
+        static float PointWorlyNoise(float3 sample_pos, float scale)
+        {
+            float3 cell_pos = floor(sample_pos / scale);
+            Array <float> nabors = Array <float> (27);
+
+            int i = 0;
+            float3 n_cell_pos;
+            float3 rand_offset;
+
+            for (int x = -1; x < 2; x++)
+            {
+                for (int y = -1; y < 2; y++)
+                {
+                    for (int z = -1; z < 2; z++)
+                    {
+                        n_cell_pos = cell_pos + float3(x, y, z);
+                        rand_offset = random(n_cell_pos / scale) * scale;
+                        nabors[i] = dot(sample_pos - (n_cell_pos * scale + rand_offset));
+                        i++;
+                    }
+                }
+            }
+            return map(sqrt(min <float> (nabors)) / (scale * 1.25), 0, 1, 1, -1);
+        }
+
+    public:
+
+        // gnerates n octaves of worly noise
+        static float PointWorly(float3 sample_pos, int octaves, float scale_, float persistance, float luclarity)
+        {
+            float height = 1;
+            float scale = scale_;
+            float total = 0;
+            float max_possible = 0;
+
+            float3 p;
+            for (int o = 0; o < octaves; o++)
+            {
+                p = sample_pos + (float) o * 2000;
+                total += PointWorlyNoise(p, scale) * height;
+                max_possible += height;
+                scale *= luclarity;
+                height *= persistance;
+            }
+            return total / max_possible;
+        }
 };
+
