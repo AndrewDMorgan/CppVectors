@@ -71,15 +71,17 @@ class float2
             return float2((int) x % (int) vector.x, (int) y % (int) vector.y);
         }
 
-        float2 operator %= (float V)
+        void operator %= (float V)
         {
             int v = (int) V;
-            return float2((int) x % v, (int) y % v);
+            x = (int) x % v;
+            y = (int) y % v;
         }
 
-        float2 operator %= (float2 vector)
+        void operator %= (float2 vector)
         {
-            return float2((int) x % (int) vector.x, (int) y % (int) vector.y);
+            x = (int) x % (int) vector.x;
+            y = (int) y % (int) vector.y;
         }
 
         float2 operator + (float v)
@@ -121,44 +123,45 @@ class float2
         {
             return float2(x / vector.x, y / vector.y);
         }
-        float2 operator += (float v)
+
+        void operator += (float v)
         {
-            return float2(x + v, y + v);
+            x += v; y += v;
         }
 
-        float2 operator += (float2 vector)
+        void operator += (float2 vector)
         {
-            return float2(x + vector.x, y + vector.y);
+            x += vector.x; y += vector.y;
         }
 
-        float2 operator -= (float v)
+        void operator -= (float v)
         {
-            return float2(x - v, y - v);
+            x -= v; y -= v;
         }
 
-        float2 operator -= (float2 vector)
+        void operator -= (float2 vector)
         {
-            return float2(x - vector.x, y - vector.y);
+            x -= vector.x; y -= vector.y;
         }
 
-        float2 operator *= (float v)
+        void operator *= (float v)
         {
-            return float2(x * v, y * v);
+            x *= v; y *= v;
         }
 
-        float2 operator *= (float2 vector)
+        void operator *= (float2 vector)
         {
-            return float2(x * vector.x, y * vector.y);
+            x *= vector.x; y *= vector.y;
         }
 
-        float2 operator /= (float v)
+        void operator /= (float v)
         {
-            return float2(x / v, y / v);
+            x /= v; y /= v;
         }
 
-        float2 operator /= (float2 vector)
+        void operator /= (float2 vector)
         {
-            return float2(x / vector.x, y / vector.y);
+            x /= vector.x; y /= vector.y;
         }
 };
 
@@ -243,15 +246,19 @@ class float3
             return float3((int) x % (int) vector.x, (int) y % (int) vector.y, (int) z % (int) vector.z);
         }
 
-        float3 operator %= (float V)
+        void operator %= (float V)
         {
             int v = (int) V;
-            return float3((int) x % v, (int) y % v, (int) z % v);
+            x = (int) x % v;
+            y = (int) y % v;
+            z = (int) z % v;
         }
 
-        float3 operator %= (float3 vector)
+        void operator %= (float3 vector)
         {
-            return float3((int) x % (int) vector.x, (int) y % (int) vector.y, (int) z % (int) vector.z);
+            x = (int) x % (int) vector.x;
+            y = (int) y % (int) vector.y;
+            z = (int) z % (int) vector.z;
         }
 
         float3 operator + (float v)
@@ -293,44 +300,44 @@ class float3
         {
             return float3(x / vector.x, y / vector.y, z / vector.z);
         }
-        float3 operator += (float v)
+        void operator += (float v)
         {
-            return float3(x + v, y + v, z + v);
+            x += v; y += v; z += v;
         }
 
-        float3 operator += (float3 vector)
+        void operator += (float3 vector)
         {
-            return float3(x + vector.x, y + vector.y, z + vector.z);
+            x += vector.x; y += vector.y; z += vector.z;
         }
 
-        float3 operator -= (float v)
+        void operator -= (float v)
         {
-            return float3(x - v, y - v, z - v);
+            x -= v; y -= v; z -= v;
         }
 
-        float3 operator -= (float3 vector)
+        void operator -= (float3 vector)
         {
-            return float3(x - vector.x, y - vector.y, z - vector.z);
+            x -= vector.x; y -= vector.y; z -= vector.z;
         }
 
-        float3 operator *= (float v)
+        void operator *= (float v)
         {
-            return float3(x * v, y * v, z * v);
+            x *= v; y *= v; z *= v;
         }
 
-        float3 operator *= (float3 vector)
+        void operator *= (float3 vector)
         {
-            return float3(x * vector.x, y * vector.y, z * vector.z);
+            x *= vector.x; y *= vector.y; z *= vector.z;
         }
 
-        float3 operator /= (float v)
+        void operator /= (float v)
         {
-            return float3(x / v, y / v, z / v);
+            x /= v; y /= v; z /= v;
         }
 
-        float3 operator /= (float3 vector)
+        void operator /= (float3 vector)
         {
-            return float3(x / vector.x, y / vector.y, z / vector.z);
+            x /= vector.x; y /= vector.y; z /= vector.z;
         }
 };
 
@@ -469,15 +476,21 @@ class float4
             return float4((int) x % (int) vector.x, (int) y % (int) vector.y, (int) z % (int) vector.z, (int) w % (int) vector.w);
         }
 
-        float4 operator %= (float V)
+        void operator %= (float V)
         {
             int v = (int) V;
-            return float4((int) x % v, (int) y % v, (int) z % v, (int) w % v);
+            x = (int) x % v;
+            y = (int) y % v;
+            z = (int) z % v;
+            w = (int) w % v;
         }
 
-        float4 operator %= (float4 vector)
+        void operator %= (float4 vector)
         {
-            return float4((int) x % (int) vector.x, (int) y % (int) vector.y, (int) z % (int) vector.z, (int) w % (int) vector.w);
+            x = (int) x % (int) vector.x);
+            y = (int) y % (int) vector.y);
+            z = (int) z % (int) vector.z);
+            w = (int) w % (int) vector.w);
         }
 
         float4 operator + (float v)
@@ -519,44 +532,68 @@ class float4
         {
             return float4(x / vector.x, y / vector.y, z / vector.z, w / vector.w);
         }
-        float4 operator += (float v)
+        void operator += (float v)
         {
-            return float4(x + v, y + v, z + v, w + v);
+            x += v;
+            y += v;
+            z += v;
+            w += v;
         }
 
-        float4 operator += (float4 vector)
+        void operator += (float4 vector)
         {
-            return float4(x + vector.x, y + vector.y, z + vector.z, w + vector.w);
+            x += vector.x;
+            y += vector.y;
+            z += vector.z;
+            w += vector.w;
         }
 
-        float4 operator -= (float v)
+        void operator -= (float v)
         {
-            return float4(x - v, y - v, z - v, w - v);
+            x -= v;
+            y -= v;
+            z -= v;
+            w -= v;
         }
 
-        float4 operator -= (float4 vector)
+        void operator -= (float4 vector)
         {
-            return float4(x - vector.x, y - vector.y, z - vector.z, w - vector.w);
+            x -= vector.x;
+            y -= vector.y;
+            z -= vector.z;
+            w -= vector.w;
         }
 
-        float4 operator *= (float v)
+        void operator *= (float v)
         {
-            return float4(x * v, y * v, z * v, w * v);
+            x *= v;
+            y *= v;
+            z *= v;
+            w *= v;
         }
 
-        float4 operator *= (float4 vector)
+        void operator *= (float4 vector)
         {
-            return float4(x * vector.x, y * vector.y, z * vector.z, w * vector.w);
+            x *= vector.x;
+            y *= vector.y;
+            z *= vector.z;
+            w *= vector.w;
         }
 
-        float4 operator /= (float v)
+        void operator /= (float v)
         {
-            return float4(x / v, y / v, z / v, w / v);
+            x /= v;
+            y /= v;
+            z /= v;
+            w /= v;
         }
 
-        float4 operator /= (float4 vector)
+        void operator /= (float4 vector)
         {
-            return float4(x / vector.x, y / vector.y, z / vector.z, w / vector.w);
+            x /= vector.x;
+            y /= vector.y;
+            z /= vector.z;
+            w /= vector.w;
         }
 };
 
@@ -1036,6 +1073,21 @@ float2 abs(float2 vector)
     return float2(abs(vector.x), abs(vector.y));
 }
 
+float4 exp(float4 vector)
+{
+    return float4(exp(vector.x), exp(vector.y), exp(vector.z), exp(vector.w));
+}
+
+float3 exp(float3 vector)
+{
+    return float3(exp(vector.x), exp(vector.y), exp(vector.z));
+}
+
+float2 exp(float2 vector)
+{
+    return float2(exp(vector.x), exp(vector.y));
+}
+
 float3 random(float3 co)
 {
     float3 p = float3(dot(co, float3(127.1, 311.7, 74.7)), dot(co, float3(269.5, 183.3, 246.1)), dot(co, float3(113.5, 271.9, 124.6)));
@@ -1336,7 +1388,7 @@ class Array
                 }
             }
         }
-
+        
         Array <T> operator + (Array <T> array2)
         {
             if (size.y == 0)
