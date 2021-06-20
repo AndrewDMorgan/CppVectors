@@ -689,6 +689,51 @@ float fract(float v)
     return v - floor(v);
 }
 
+float4 sin(float4 vector)
+{
+    return float4(sin(vector.x), sin(vector.y), sin(vector.z), sin(vector.w));
+}
+
+float3 sin(float3 vector)
+{
+    return float3(sin(vector.x), sin(vector.y), sin(vector.z));
+}
+
+float2 sin(float2 vector)
+{
+    return float2(sin(vector.x), sin(vector.y));
+}
+
+float4 cos(float4 vector)
+{
+    return float4(cos(vector.x), cos(vector.y), cos(vector.z), cos(vector.w));
+}
+
+float3 cos(float3 vector)
+{
+    return float3(cos(vector.x), cos(vector.y), cos(vector.z));
+}
+
+float2 cos(float2 vector)
+{
+    return float2(cos(vector.x), cos(vector.y));
+}
+
+float4 sqrt(float4 vector)
+{
+    return float4(sqrt(vector.x), sqrt(vector.y), sqrt(vector.z), sqrt(vector.w));
+}
+
+float3 sqrt(float3 vector)
+{
+    return float3(sqrt(vector.x), sqrt(vector.y), sqrt(vector.z));
+}
+
+float2 sqrt(float2 vector)
+{
+    return float2(sqrt(vector.x), sqrt(vector.y));
+}
+
 float4 fract(float4 vector)
 {
     return float4(fract(vector.x), fract(vector.y), fract(vector.z), fract(vector.w));
@@ -814,6 +859,26 @@ float2 clamp(float2 vector, float l, float r)
 }
 
 // clamp functions for floats and vectors that clamps the value(s) between 0 and 1
+float saturate(float k)
+{
+    return clamp(k, 0, 1);
+}
+
+float4 saturate(float4 k)
+{
+    return clamp(k, 0, 1);
+}
+
+float3 saturate(float3 k)
+{
+    return clamp(k, 0, 1);
+}
+
+float2 saturate(float2 k)
+{
+    return clamp(k, 0, 1);
+}
+
 float clamp01(float v)
 {
     return max(min(v, 1), 0);
@@ -889,7 +954,7 @@ float2 smoothstep(float2 vector)
 float map(float v, float cl, float cr, float nl, float nr)
 {
     float nv = v - cl;
-    nv = (nr - nl) / (cr - cl);
+    nv *= (nr - nl) / (cr - cl);
     nv += nl;
     return nv;
 }
@@ -971,45 +1036,36 @@ float2 abs(float2 vector)
     return float2(abs(vector.x), abs(vector.y));
 }
 
-
-// sin functions for vectors
-float4 sin(float4 vector)
-{
-    return float4(sin(vector.x), sin(vector.y), sin(vector.z), sin(vector.w));
-}
-
-float3 sin(float3 vector)
-{
-    return float3(sin(vector.x), sin(vector.y), sin(vector.z));
-}
-
-float2 sin(float2 vector)
-{
-    return float2(sin(vector.x), sin(vector.y));
-}
-
-// cosine functions for vectors
-float4 cos(float4 vector)
-{
-    return float4(cos(vector.x), cos(vector.y), cos(vector.z), cos(vector.w));
-}
-
-float3 cos(float3 vector)
-{
-    return float3(cos(vector.x), cos(vector.y), cos(vector.z));
-}
-
-float2 cos(float2 vector)
-{
-    return float2(cos(vector.x), cos(vector.y));
-}
-
-// a function that takes in a float3 and returns a randomized float3
 float3 random(float3 co)
 {
     float3 p = float3(dot(co, float3(127.1, 311.7, 74.7)), dot(co, float3(269.5, 183.3, 246.1)), dot(co, float3(113.5, 271.9, 124.6)));
     float3 output = fract(sin(p) * float3(43758.5453123, 43758.5453123, 43758.5453123));
     return output;
+}
+
+float2 random(float2 co)
+{
+    float2 p = float2(dot(co, float2(127.1, 311.7)), dot(co, float2(269.5, 183.3)));
+    float2 output = fract(sin(p) * float2(43758.5453123, 43758.5453123));
+    return output;
+}
+
+
+float3 reflect(float3 rd, float3 normal)
+{
+    return (rd - (normal * 2) * (rd * normal));
+}
+
+
+float4 reflect(float4 rd, float4 normal)
+{
+    return (rd - (normal * 2) * (rd * normal));
+}
+
+
+float2 reflect(float2 rd, float2 normal)
+{
+    return (rd - (normal * 2) * (rd * normal));
 }
 
 
@@ -2622,6 +2678,9 @@ class Array
                     }
                 }
             }
+
+            std::cout<<"Error: "<<key<<" not in Array"<<std::endl;
+            return -1;
         }
 
         // deleting items (so theres not a memory leak)
@@ -3050,11 +3109,18 @@ class Noise  // nothing in this class is complete (it may or may not be working)
                                             }
                                         }
 
-                                        float min_dist = sqrt(min <float> (nabors));
+                                        float min_dist = nabors[0];
+                                        for (int i = 0; i < 81; i++)
+                                        {
+                                            if (nabors[i] < min_dist)
+                                            {
+                                                min_dist = nabors[i];
+                                            }
+                                        }
                                         float4 min_dist_index = nabors.index(min_dist);
                                         
-                                        float height = nabors(min_dist_index.x, min_dist_index.y, min_dist_index.z, min_dist_index.w);
-                                        noise(x, y, z, w) = height;  // scale this value so in the end it will be from 0 - 1  (need noise to start at 0 and this to be added)
+                                        float height = sqrt(nabors(min_dist_index.x, min_dist_index.y, min_dist_index.z, min_dist_index.w));
+                                        noise(x, y, z, w) = height;  // scale this value so in the end it will be from 0 - 1
                                     }
                                 }
                             }
@@ -3080,55 +3146,5 @@ class Noise  // nothing in this class is complete (it may or may not be working)
                     
                 }
         };
-
-    private:
-
-        // generates one octave of worly noise (needed for octave worly noise)
-        static float PointWorlyNoise(float3 sample_pos, float scale)
-        {
-            float3 cell_pos = floor(sample_pos / scale);
-            Array <float> nabors = Array <float> (27);
-
-            int i = 0;
-            float3 n_cell_pos;
-            float3 rand_offset;
-
-            for (int x = -1; x < 2; x++)
-            {
-                for (int y = -1; y < 2; y++)
-                {
-                    for (int z = -1; z < 2; z++)
-                    {
-                        n_cell_pos = cell_pos + float3(x, y, z);
-                        rand_offset = random(n_cell_pos / scale) * scale;
-                        nabors[i] = dot(sample_pos - (n_cell_pos * scale + rand_offset));
-                        i++;
-                    }
-                }
-            }
-            return map(sqrt(min <float> (nabors)) / (scale * 1.25), 0, 1, 1, -1);
-        }
-
-    public:
-
-        // gnerates n octaves of worly noise
-        static float PointWorly(float3 sample_pos, int octaves, float scale_, float persistance, float luclarity)
-        {
-            float height = 1;
-            float scale = scale_;
-            float total = 0;
-            float max_possible = 0;
-
-            float3 p;
-            for (int o = 0; o < octaves; o++)
-            {
-                p = sample_pos + (float) o * 2000;
-                total += PointWorlyNoise(p, scale) * height;
-                max_possible += height;
-                scale *= luclarity;
-                height *= persistance;
-            }
-            return total / max_possible;
-        }
 };
 
