@@ -487,10 +487,10 @@ class float4
 
         void operator %= (float4 vector)
         {
-            x = (int) x % (int) vector.x);
-            y = (int) y % (int) vector.y);
-            z = (int) z % (int) vector.z);
-            w = (int) w % (int) vector.w);
+            x = (int) x % (int) vector.x;
+            y = (int) y % (int) vector.y;
+            z = (int) z % (int) vector.z;
+            w = (int) w % (int) vector.w;
         }
 
         float4 operator + (float v)
@@ -1388,7 +1388,7 @@ class Array
                 }
             }
         }
-        
+
         Array <T> operator + (Array <T> array2)
         {
             if (size.y == 0)
