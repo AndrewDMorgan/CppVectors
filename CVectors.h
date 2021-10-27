@@ -198,10 +198,11 @@ class float3
             z = vector.y;
         }
 
-        float3 (float2 vector, float z)
+        float3 (float2 vector, float z_)
         {
             x = vector.x;
             y = vector.y;
+            z = z_;
         }
         
         // overloading the operators
@@ -365,9 +366,9 @@ class float4
         float4 (float x_)
         {
             x = x_;
-            y = x;
-            z = x;
-            w = x;
+            y = x_;
+            z = x_;
+            w = x_;
         }
 
         float4 (float x_, float y_)
@@ -382,8 +383,8 @@ class float4
         {
             x = vector.x;
             y = vector.y;
-            z = x;
-            w = y;
+            z = vector.x;
+            w = vector.y;
         }
 
         float4 (float2 vector, float z_, float w_)
@@ -831,6 +832,18 @@ float min(float v1, float v2)
     }
 }
 
+int min(int v1, int v2)
+{
+    if (v1 < v2)
+    {
+        return v1;
+    }
+    else
+    {
+        return v2;
+    }
+}
+
 float4 min(float4 vector, float v)
 {
     return float4(min(vector.x, v), min(vector.y, v), min(vector.z, v), min(vector.w, v));
@@ -847,6 +860,18 @@ float2 min(float2 vector, float v)
 }
 
 // float max and vector max functions
+int max(int v1, int v2)
+{
+    if (v1 > v2)
+    {
+        return v1;
+    }
+    else
+    {
+        return v2;
+    }
+}
+
 float max(float v1, float v2)
 {
     if (v1 > v2)
@@ -918,7 +943,7 @@ float2 saturate(float2 k)
 
 float clamp01(float v)
 {
-    return max(min(v, 1), 0);
+    return max(min(v, 1.), 0.);
 }
 
 float4 clamp01(float4 vector)
@@ -1102,24 +1127,50 @@ float2 random(float2 co)
     return output;
 }
 
-
 float3 reflect(float3 rd, float3 normal)
 {
     return (rd - (normal * 2) * (rd * normal));
 }
-
 
 float4 reflect(float4 rd, float4 normal)
 {
     return (rd - (normal * 2) * (rd * normal));
 }
 
-
 float2 reflect(float2 rd, float2 normal)
 {
     return (rd - (normal * 2) * (rd * normal));
 }
 
+float4 min(float4 v1, float4 v2)
+{
+    return float4(min(v1.x, v2.x), min(v1.y, v2.y), min(v1.z, v2.z), min(v1.w, v2.w));
+}
+
+float3 min(float3 v1, float3 v2)
+{
+    return float3(min(v1.x, v2.x), min(v1.y, v2.y), min(v1.z, v2.z));
+}
+
+float2 min(float2 v1, float2 v2)
+{
+    return float2(min(v1.x, v2.x), min(v1.y, v2.y));
+}
+
+float4 max(float4 v1, float4 v2)
+{
+    return float4(max(v1.x, v2.x), max(v1.y, v2.y), max(v1.z, v2.z), max(v1.w, v2.w));
+}
+
+float3 max(float3 v1, float3 v2)
+{
+    return float3(max(v1.x, v2.x), max(v1.y, v2.y), max(v1.z, v2.z));
+}
+
+float2 max(float2 v1, float2 v2)
+{
+    return float2(max(v1.x, v2.x), max(v1.y, v2.y));
+}
 
 // defining types to pass in functions
 typedef float (*FFunctionCallF4)(float4 args);  // float 4 input, out float
@@ -1265,7 +1316,7 @@ class Array
 
         // initialzing public veriables
         Array() = default;
-
+        
         float4 size;
 
         // initilizing terms (in constructor)
@@ -1298,42 +1349,42 @@ class Array
         }
 
         // overloading brackets and parenthasis to make a way to acsess the list
-        T & operator [] (float4 key)
+        T &operator [] (float4 key)
         {
             return contents[(int) (key.x + key.y * size.x + key.z * size.x * size.y + key.w * size.x * size.y * size.z)];
         }
-
-        T & operator [] (float3 key)
+        
+        T &operator [] (float3 key)
         {
             return contents[(int) (key.x + key.y * size.x + key.z * size.x * size.y)];
         }
 
-        T & operator [] (float2 key)
+        T &operator [] (float2 key)
         {
             return contents[(int) (key.x + key.y * size.x)];
         }
 
-        T & operator [] (int key)
+        T &operator [] (int key)
         {
             return contents[key];
         }
 
-        T & operator () (int x, int y, int z, int w)
+        T &operator () (int x, int y, int z, int w)
         {
             return contents[(int) (x + y * size.x + z * size.x * size.y + w * size.x * size.y * size.z)];
         }
 
-        T & operator () (int x, int y, int z)
+        T &operator () (int x, int y, int z)
         {
             return contents[(int) (x + y * size.x + z * size.x * size.y)];
         }
 
-        T & operator () (int x, int y)
+        T &operator () (int x, int y)
         {
             return contents[(int) (x + y * size.x)];
         }
 
-        T & operator () (int x)
+        T &operator () (int x)
         {
             return contents[x];
         }
@@ -2974,7 +3025,7 @@ class array
 
             for (int x = 0; x < sx; x++)
             {
-                ar[x] = (T) (((float) rand() / RAND_MAX) * (mar - mir) + mir);
+                ar(x) = (T) (((float) rand() / RAND_MAX) * (mar - mir) + mir);
             }
 
             return ar;
@@ -3132,8 +3183,7 @@ class Noise  // nothing in this class is complete (it may or may not be working)
                                 {
                                     for (int w = 0; w < size.w; w++)
                                     {
-                                        i = 0;
-
+                                        float min_dist = 100000000;
                                         for (int X = -1; X < 2; X++)
                                         {
                                             for (int Y = -1; Y < 2; Y++)
@@ -3154,21 +3204,12 @@ class Noise  // nothing in this class is complete (it may or may not be working)
                                                         distZ = pow((nz - z), 2);
                                                         distW = pow((nw - w), 2);
 
-                                                        nabors[i] = distX + distY + distZ + distW;
-                                                        i++;
+                                                        min_dist = min(distX + distY + distZ + distW, min_dist);
                                                     }
                                                 }
                                             }
                                         }
 
-                                        float min_dist = nabors[0];
-                                        for (int i = 0; i < 81; i++)
-                                        {
-                                            if (nabors[i] < min_dist)
-                                            {
-                                                min_dist = nabors[i];
-                                            }
-                                        }
                                         float4 min_dist_index = nabors.index(min_dist);
                                         
                                         float height = sqrt(nabors(min_dist_index.x, min_dist_index.y, min_dist_index.z, min_dist_index.w));
